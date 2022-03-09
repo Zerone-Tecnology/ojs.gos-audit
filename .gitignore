@@ -1,0 +1,11 @@
+/config.inc.php
+./build
+temp
+/uploads
+/files
+/public
+.htaccess
+.project
+.buildpath
+.settings
+.DS_Store
