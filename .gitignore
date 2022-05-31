@@ -9,3 +9,6 @@ temp
 .buildpath
 .settings
 .DS_Store
+/adminer.php
+/cache/
+.idea/
