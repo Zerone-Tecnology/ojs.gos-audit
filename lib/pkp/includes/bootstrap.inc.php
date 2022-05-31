@@ -34,7 +34,7 @@ chdir(BASE_SYS_DIR);
 
 // System-wide functions
 require('./lib/pkp/includes/functions.inc.php');
-
+require('./vendor/autoload.php');
 // Initialize the application environment
 import('classes.core.Application');
 

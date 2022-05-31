@@ -26,89 +26,140 @@
 
 <div class="container container-homepage-issue page-content">
 	{if $issue}
-		<h2 class="h5 homepage-issue-current">
-			{translate key="journal.currentIssue"}
-		</h2>
-		<div class="h1 homepage-issue-identifier">
-			{$issue->getIssueSeries()|escape}
-		</div>
-		<div class="h6 homepage-issue-published">
-			{translate key="plugins.themes.healthSciences.currentIssuePublished" date=$issue->getDatePublished()|date_format:$dateFormatLong}
-		</div>
-
-		{* make the entire block conditional if there aren't any additional issue data *}
-		{if  $issue->getLocalizedCoverImageUrl() || $issue->hasDescription() || $issueGalleys}
-			<div class="row justify-content-center homepage-issue-header">
-				{if $issue->getLocalizedCoverImageUrl()}
-					<div class="col-lg-3">
-						<a href="{url op="view" page="issue" path=$issue->getBestIssueId()}">
-							<img class="img-fluid homepage-issue-cover" src="{$issue->getLocalizedCoverImageUrl()|escape}"{if $issue->getLocalizedCoverImageAltText() != ''} alt="{$issue->getLocalizedCoverImageAltText()|escape}"{/if}>
+		<!-- Main banner -->
+		<section class="banner--wide-top row">
+			<!-- <img class="fly" src="{$baseUrl}/templates/images/banner/circles.svg" alt="" /> -->
+			<article>
+				<div class="cartegory">
+					{translate key="mainpage.banner.section"}
+				</div>
+				<div class="title">
+					{$homepageImage.altText|escape}
+				</div>
+				<div class="description">
+					{if $additionalHomeContent}
+						{$additionalHomeContent}
+					{/if}
+				</div>
+				<div class="btn--wrapper">
+					<div class="btn--inline">
+						<a href="/index.php/ma/submission/wizard" class="btn btn--primary">
+							{translate key="navigation.sendarticle"}
+						</a>
+						<a href="/index.php/ma/issue/current" class="btn btn--secondary">
+							{translate key="plugins.readlast"}
 						</a>
 					</div>
-				{/if}
-				{if $issue->hasDescription() || $journalDescription || $issueGalleys}
-					<div class="col-lg-9">
-						<div class="homepage-issue-description-wrapper">
-							{if $issue->hasDescription()}
-								<div class="homepage-issue-description">
-									<div class="h2">
-										{if $issue->getLocalizedTitle()}
-											{$issue->getLocalizedTitle()|escape}
-										{else}
-											{translate key="plugins.themes.healthSciences.issueDescription"}
-										{/if}
-									</div>
-									{$issue->getLocalizedDescription()|strip_unsafe_html}
-									<div class="homepage-issue-description-more">
-										<a href="{url op="view" page="issue" path=$issue->getBestIssueId()}">{translate key="common.more"}</a>
-									</div>
-								</div>
-							{elseif $journalDescription}
-								<div class="homepage-journal-description long-text" id="homepageDescription">
-									{$journalDescription|strip_unsafe_html}
-								</div>
-								<div class="homepage-description-buttons hidden" id="homepageDescriptionButtons">
-									<a class="homepage-journal-description-more hidden" id="homepageDescriptionMore">{translate key="common.more"}</a>
-									<a class="homepage-journal-description-less hidden" id="homepageDescriptionLess">{translate key="common.less"}</a>
-								</div>
-							{/if}
-							{if $issueGalleys}
-								<div class="homepage-issue-galleys">
-									<div class="h3">
-										{translate key="issue.fullIssue"}
-									</div>
-									{foreach from=$issueGalleys item=galley}
-										{include file="frontend/objects/galley_link.tpl" parent=$issue purchaseFee=$currentJournal->getSetting('purchaseIssueFee') purchaseCurrency=$currentJournal->getSetting('currency')}
-									{/foreach}
-								</div>
-							{/if}
-						</div>
-					</div>
-				{/if}
-			</div>
-		{/if}
+				</div>
+			</article>
+		</section>
 
 	{/if}
 
 	{* display announcements before full issue *}
 	{if $numAnnouncementsHomepage && $announcements|@count}
-	<section class="row homepage-announcements">
-		<h2 class="sr-only">{translate key="announcement.announcementsHome"}</h2>
-		{foreach from=$announcements item=announcement}
-			<article class="col-md-4 homepage-announcement">
-				<h3 class="homepage-announcement-title">{$announcement->getLocalizedTitle()|escape}</h3>
-				<p>{$announcement->getLocalizedDescriptionShort()|strip_unsafe_html}
-					<br>
-					<a href="{url router=$smarty.const.ROUTE_PAGE page="announcement" op="view" path=$announcement->getId()}">
-						{capture name="more" assign="more"}{translate key="common.more"}{/capture}
-						{translate key="plugins.themes.healthSciences.more" text=$more}
-					</a>
-				</p>
-				<footer>
-					<small class="homepage-announcement-date">{$announcement->getDatePosted()|date_format:$dateFormatLong}</small>
-				</footer>
-			</article>
-		{/foreach}
+	<section class="row homepage-announcements content--complex"">
+
+
+
+		<div class="content--left">
+			<div class="block">
+				<div class="block--title">
+					<div class="title">
+						<h3>
+							{translate key="mainpage.latestEvents"}
+						</h3>
+					</div>
+					<div class="link">
+						<a href="/index.php/ma/announcement" class="block--link">
+							{translate key="mainpage.latestEventsAll"}
+						</a>
+					</div>
+				</div>
+				<div class="block--content">
+					<div class="news--list">
+						{foreach from=$announcements item=announcement}
+							<div class="news--item">
+								<div class="news--content--wrapper">
+									<div class="news--content">
+										<div class="news--image">
+											{$announcement->getLocalizedImage()}
+										</div>
+										<article class="news--info">
+											<div class="title">
+												<a href="{url router=$smarty.const.ROUTE_PAGE page="announcement" op="view" path=$announcement->getId()}">
+													{$announcement->getLocalizedTitle()|escape}
+												</a>
+											</div>
+										</article>
+									</div>
+								</div>
+							</div>
+						{/foreach}
+
+						<div class="pagination pagination--news">
+							<div class="icon icon--arrow-left">
+								<a href="/">
+									<img
+										src="{$baseUrl}/templates/images/icons/arrow-left.svg"
+										alt=""
+										srcset=""
+									/>
+								</a>
+							</div>
+							<div class="icon icon--arrow-right">
+								<a href="/">
+									<img
+										src="{$baseUrl}/templates/images/icons/arrow-right.svg"
+										alt=""
+										srcset=""
+									/>
+								</a>
+							</div>
+							<div class="external">
+								<div class="image--wrapper">
+									<a href="/" class="icon icon--circle active"></a>
+									<a href="/" class="icon icon--circle"></a>
+									<a href="/" class="icon icon--circle"></a>
+								</div>
+							</div>
+						</div>
+
+						{* Pagination *}
+                        {if $prevPage > 1}
+                            {capture assign=prevUrl}{url router=$smarty.const.ROUTE_PAGE page="issue" op="archive" path=$prevPage}{/capture}
+                        {elseif $prevPage === 1}
+                            {capture assign=prevUrl}{url router=$smarty.const.ROUTE_PAGE page="issue" op="archive"}{/capture}
+                        {/if}
+                        {if $nextPage}
+                            {capture assign=nextUrl}{url router=$smarty.const.ROUTE_PAGE page="issue" op="archive" path=$nextPage}{/capture}
+                        {/if}
+                        {include
+                            file="frontend/components/pagination.tpl"
+                            prevUrl=$prevUrl
+                            nextUrl=$nextUrl
+                            showingStart=$showingStart
+                            showingEnd=$showingEnd
+                            total=$total
+                        }
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="content--right">
+					<div class="block">
+						<div class="block--title">
+							<div class="title">
+								<h3>{translate key="mainpage.useful.links"}</h3>
+							</div>
+						</div>
+						<div class="block--content">
+							 {call_hook name="Templates::Common::Sidebar"}
+						</div>
+					</div>
+				</div>
+
 	</section>
 	{/if}
 
@@ -118,20 +169,8 @@
 				{include file="frontend/objects/issue_toc.tpl" sectionHeading="h3"}
 			</div>
 		</div>
-
-		<div class="text-center">
-			<a class="btn" href="{url router=$smarty.const.ROUTE_PAGE page="issue" op="archive"}">
-				{translate key="journal.viewAllIssues"}
-			</a>
-		</div>
 	{/if}
 
-	{* Additional Homepage Content *}
-	{if $additionalHomeContent}
-		<div class="row justify-content-center homepage-additional-content">
-			<div class="col-lg-9">{$additionalHomeContent}</div>
-		</div>
-	{/if}
 </div><!-- .container -->
 
 {include file="frontend/components/footer.tpl"}

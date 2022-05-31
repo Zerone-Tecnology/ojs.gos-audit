@@ -1,89 +1,98 @@
 {**
- * templates/frontend/components/header.tpl
+ * lib/pkp/templates/frontend/components/header.tpl
  *
- * Copyright (c) 2014-2020 Simon Fraser University
- * Copyright (c) 2003-2020 John Willinsky
- * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
+ * Copyright (c) 2014-2021 Simon Fraser University
+ * Copyright (c) 2003-2021 John Willinsky
+ * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
  *
  * @brief Common frontend site header.
+ *
+ * @uses $isFullWidth bool Should this page be displayed without sidebars? This
+ *       represents a page-level override, and doesn't indicate whether or not
+ *       sidebars have been configured for thesite.
  *}
-
-{* Determine whether a logo or title string is being displayed *}
-{assign var="showingLogo" value=true}
-{if !$displayPageHeaderLogo}
-	{assign var="showingLogo" value=false}
-{/if}
-
-{capture assign="homeUrl"}
-	{url page="index" router=$smarty.const.ROUTE_PAGE}
-{/capture}
-
-{* Logo or site title. Only use <h1> heading on the homepage.
-	 Otherwise that should go to the page title. *}
-{if $requestedOp == 'index'}
-	{assign var="siteNameTag" value="h1"}
-{else}
-	{assign var="siteNameTag" value="div"}
-{/if}
-
-{* Determine whether to show a logo of site title *}
-{capture assign="brand"}{strip}
-	{if $displayPageHeaderLogo}
-		<img src="{$publicFilesDir}/{$displayPageHeaderLogo.uploadName|escape:"url"}"
-		     {if $displayPageHeaderLogo.altText != ''}alt="{$displayPageHeaderLogo.altText|escape}"
-		     {else}alt="{translate key="common.pageHeaderLogo.altText"}"{/if}
-				 class="img-fluid">
-	{elseif $displayPageHeaderTitle}
-		<span class="navbar-logo-text">{$displayPageHeaderTitle|escape}</span>
-	{else}
-		<img src="{$baseUrl}/templates/images/structure/logo.png" alt="{$applicationName|escape}" class="img-fluid">
+{strip}
+	{* Determine whether a logo or title string is being displayed *}
+	{assign var="showingLogo" value=true}
+	{if !$displayPageHeaderLogo}
+		{assign var="showingLogo" value=false}
 	{/if}
-{/strip}{/capture}
-
+{/strip}
 <!DOCTYPE html>
 <html lang="{$currentLocale|replace:"_":"-"}" xml:lang="{$currentLocale|replace:"_":"-"}">
 {if !$pageTitleTranslated}{capture assign="pageTitleTranslated"}{translate key=$pageTitle}{/capture}{/if}
 {include file="frontend/components/headerHead.tpl"}
-<body dir="{$currentLocaleLangDir|escape|default:"ltr"}">
+<link rel="stylesheet" href="{$baseUrl}/plugins/themes/healthSciences/styles/css/custom.css">
+<body class="pkp_page_{$requestedPage|escape|default:"index"} pkp_op_{$requestedOp|escape|default:"index"}{if $showingLogo} has_site_logo{/if}" dir="{$currentLocaleLangDir|escape|default:"ltr"}">
 
-{* Header *}
-<header class="main-header">
-	<div class="container">
+	<div class="pkp_structure_page">
 
-		<{$siteNameTag} class="sr-only">{$pageTitleTranslated|escape}</{$siteNameTag}>
+		{* Header *}
+		<header>
 
-	<div class="navbar-logo">
-		<a href="{$homeUrl}">{$brand}</a>
-	</div>
+				<div class="header--top">
+					<div class="container">
+						<div class="logo--wrapper">
+							{capture assign="homeUrl"}
+								{url page="index" router=$smarty.const.ROUTE_PAGE}
+							{/capture}
+							{if $displayPageHeaderLogo}
+								<a href="{$homeUrl}" class="is_img">
+									<img style="height:120px" src="{$publicFilesDir}/{$displayPageHeaderLogo.uploadName|escape:"url"}" width="{$displayPageHeaderLogo.width|escape}" height="{$displayPageHeaderLogo.height|escape}" {if $displayPageHeaderLogo.altText != ''}alt="{$displayPageHeaderLogo.altText|escape}"{/if} />
+								</a>
+							{elseif $displayPageHeaderTitle}
+								<a href="{$homeUrl}" class="is_text">{$displayPageHeaderTitle|escape}</a>
+							{else}
+								<a href="{$homeUrl}" class="is_img">
+									<img style="height:120px" src="{$baseUrl}/templates/images/structure/logo.png" alt="{$applicationName|escape}" title="{$applicationName|escape}" width="180" height="90" />
+								</a>
+							{/if}
+						</div>
+						<div class="navigation--wrapper">
+							<div class="personal--wrapper">
+								
 
-	{* Main navigation *}
-	<nav class="navbar navbar-expand-lg navbar-light">
-		<a class="navbar-brand" href="{$homeUrl}">{$brand}</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar"
-		        aria-controls="main-navbar" aria-expanded="false"
-		        aria-label="{translate key="plugins.themes.healthSciences.nav.toggle"}">
-			<span class="navbar-toggler-icon"></span>
-		</button>
+								<div class="pkp_navigation_user_wrapper" id="navigationUserWrapper">
+									{load_menu name="user" id="navigationUser" ulClass="pkp_navigation_user" liClass="profile"}
+								</div>	
+							
+								<img class="personal--svg" src="{$baseUrl}/templates/images/icons/user.svg" />
+								
+							</div>
+							<div class="lang--wrapper">
+								{include file="frontend/components/languageSwitcher.tpl" id="languageLargeNav"}
+							</div>
+						</div>
+					</div>
+				</div>
 
-		<div class="collapse navbar-collapse justify-content-md-center" id="main-navbar">
-			{* primary menu *}
-			{capture assign="primaryMenu"}
-				{load_menu name="primary" id="primaryNav" ulClass="navbar-nav" liClass="nav-item"}
-			{/capture}
-			{if !empty(trim($primaryMenu)) || $currentContext}
-				{$primaryMenu}
-			{/if}
-			{* user menu *}
-			{load_menu name="user" id="primaryNav-userNav" ulClass="navbar-nav" liClass="nav-item"}
-			{include file="frontend/components/languageSwitcher.tpl" id="languageSmallNav"}
-		</div>
-	</nav>
+				{capture assign="primaryMenu"}
+					{load_menu name="primary" id="navigationPrimary" ulClass="pkp_navigation_primary"}
+				{/capture}
 
-	{* Repeat the userNav for positioning on large screens *}
-	{load_menu name="user" id="userNav" ulClass="navbar-nav" liClass="nav-item"}
+				<div class="header--bottom">
+					<div class="container">
 
-	{* Language switcher *}
-	{include file="frontend/components/languageSwitcher.tpl" id="languageLargeNav"}
+						{* Primary navigation menu for current application *}
+						{$primaryMenu}
 
-	</div>
-</header>
+						{* Search form *}
+						{if $currentContext && $requestedPage !== 'search'}
+							<div class="search--wrapper">
+							   
+									<a href="{url page="search"}" class="pkp_search pkp_search_desktop search--bar">
+										<span class="fa fa-search" aria-hidden="true"></span>
+										{translate key="btn.search"}
+										<button class="search--button" type="submit"><img class="personal--svg" src="{$baseUrl}/templates/images/icons/search.svg" /></button>
+									</a>
+							</div>
+						{/if}
+					</div>
+				</div>
+		</header><!-- .pkp_structure_head -->
+
+		{* Wrapper for page content and sidebars *}
+		{if $isFullWidth}
+			{assign var=hasSidebar value=0}
+		{/if}
+

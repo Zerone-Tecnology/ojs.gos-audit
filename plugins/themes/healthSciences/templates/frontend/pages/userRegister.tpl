@@ -11,14 +11,33 @@
  *}
 {include file="frontend/components/header.tpl" pageTitle="user.register"}
 
-<div class="container page-register">
-	<div class="row page-header justify-content-md-center">
-		<div class="col-md-8">
-			<h1>{translate key="user.register"}</h1>
+<div class="breadcrumb">
+	<div class="container">
+		<div class="row">
+			<nav class="cmp_breadcrumbs" role="navigation" aria-label="Вы здесь:">
+				<ol>
+					<li>
+						<a href="/">
+							{translate key="user.index"}
+						</a>
+					</li>
+					<li class="current">
+						<span aria-current="page">
+							{translate key="user.register"}
+						</span>
+					</li>
+				</ol>
+			</nav>
 		</div>
 	</div>
-	<div class="row justify-content-md-center">
-		<div class="col-md-8">
+</div>
+
+<main class="main_page">
+	<div class="container">
+		<div class="page-wrapper">
+			<div class="title">
+				{translate key="user.register"}
+			</div>
 			<div class="page-content">
 
 				<form class="form-register" id="register" method="post" action="{url op="register"}">
@@ -51,9 +70,11 @@
 						</a>
 					</div>
 				</form>
+				
 			</div>
 		</div>
 	</div>
-</div><!-- .page -->
+</main>
+	<!-- .page -->
 
 {include file="frontend/components/footer.tpl"}

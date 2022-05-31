@@ -9,14 +9,20 @@
  *}
 {include file="frontend/components/header.tpl" pageTitleTranslated=$title}
 
-<div class="container page-custom">
-	<div class="row page-header justify-content-md-center">
-		<div class="col-md-8">
-			<h1>{$title|escape}</h1>
+<div class="breadcrumb">
+	<div class="container">
+		<div class="row">
+			{assign var=currentTitle value=$title}{include file="frontend/components/breadcrumbs.tpl"}
 		</div>
 	</div>
-	<div class="row justify-content-md-center">
-		<div class="col-md-8">
+</div>
+
+<main class="main_page">
+	<div class="container">
+		<div class="page-wrapper">
+			<div class="title">
+				{$title|escape}
+			</div>
 			<div class="page-content">
 				{$content}
 			</div>

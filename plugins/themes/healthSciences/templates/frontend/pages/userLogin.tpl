@@ -10,19 +10,38 @@
  *}
 {include file="frontend/components/header.tpl" pageTitle="user.login"}
 
-<div class="container page-login">
-	<div class="row page-header justify-content-md-center">
-		<div class="col-md-8">
-			<h1>{translate key="user.login"}</h1>
+<div class="breadcrumb">
+	<div class="container">
+		<div class="row">
+			<nav class="cmp_breadcrumbs" role="navigation" aria-label="Вы здесь:">
+				<ol>
+					<li>
+						<a href="/">
+							{translate key="user.index"}
+						</a>
+					</li>
+					<li class="current">
+						<span aria-current="page">
+							{translate key="user.login"}
+						</span>
+					</li>
+				</ol>
+			</nav>
 		</div>
 	</div>
-	<div class="row justify-content-md-center">
-		<div class="col-md-8">
+</div>
+
+<main class="main_page">
+	<div class="container">
+		<div class="page-wrapper">
+			<div class="title">
+				{translate key="user.login"}
+			</div>
 			<div class="page-content">
 
 				{* A login message may be displayed if the user was redireceted to the
-				   login page from another request. Examples include if login is required
-				   before dowloading a file. *}
+				login page from another request. Examples include if login is required
+				before dowloading a file. *}
 				{if $loginMessage}
 					<p>
 						{translate key=$loginMessage}
@@ -40,5 +59,5 @@
 			</div>
 		</div>
 	</div>
-</div>
+</main>
 {include file="frontend/components/footer.tpl"}

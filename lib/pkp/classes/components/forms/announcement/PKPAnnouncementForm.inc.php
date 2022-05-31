@@ -12,6 +12,7 @@
  * @brief A preset form for creating a new announcement
  */
 namespace PKP\components\forms\announcement;
+use PKP\components\forms\FieldUploadImage;
 use \PKP\components\forms\FormComponent;
 use \PKP\components\forms\FieldOptions;
 use \PKP\components\forms\FieldText;
@@ -33,7 +34,7 @@ class PKPAnnouncementForm extends FormComponent {
 	 * @param $locales array Supported locales
 	 * @param $announcementContext Context The context to get supported announcement types
 	 */
-	public function __construct($action, $locales, $announcementContext) {
+	public function __construct($action, $locales, $announcementContext, $imageUploadUrl) {
 		$this->action = $action;
 		$this->locales = $locales;
 
@@ -52,9 +53,19 @@ class PKPAnnouncementForm extends FormComponent {
 				'description' => __('manager.announcements.form.descriptionInstructions'),
 				'isMultilingual' => true,
 				'size' => 'large',
-				'toolbar' => 'bold italic superscript subscript | link | blockquote bullist numlist',
-				'plugins' => 'paste,link,lists',
+				'toolbar' => 'bold italic superscript subscript | link | blockquote bullist numlist | image | code',
+				'plugins' => 'paste,link,lists,image,code',
+                'uploadUrl' => $imageUploadUrl,
 			]))
+            ->addField(new \PKP\components\forms\FieldRichTextarea("image",[
+                'label' => "Only for images",
+                'description' => "to upload only image",
+                'isMultilingual' => true,
+                'size' => 'large',
+                'toolbar' => 'image',
+                'plugins' => 'image',
+                'uploadUrl' => $imageUploadUrl,
+            ]))
 			->addField(new FieldText('dateExpire', [
 				'label' => __('manager.announcements.form.dateExpire'),
 				'description' => __('manager.announcements.form.dateExpireInstructions'),

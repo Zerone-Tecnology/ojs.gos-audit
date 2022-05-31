@@ -320,8 +320,8 @@ class ManagementHandler extends Handler {
 		$locales = array_map(function($localeKey) use ($localeNames) {
 			return ['key' => $localeKey, 'label' => $localeNames[$localeKey]];
 		}, $supportedFormLocales);
-
-		$announcementForm = new \PKP\components\forms\announcement\PKPAnnouncementForm($apiUrl, $locales, $request->getContext());
+        $publicFileApiUrl = $request->getDispatcher()->url($request, ROUTE_API, $request->getContext()->getPath(), '_uploadPublicFile');
+		$announcementForm = new \PKP\components\forms\announcement\PKPAnnouncementForm($apiUrl, $locales, $request->getContext(),$publicFileApiUrl);
 
 		$getParams = [
 			'contextIds' => $request->getContext()->getId(),

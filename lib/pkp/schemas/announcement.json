@@ -51,6 +51,15 @@
 				"nullable"
 			]
 		},
+		"image": {
+			"type": "string",
+			"description": "The image of announcements",
+			"multilingual": true,
+			"apiSummary": true,
+			"validation": [
+				"nullable"
+			]
+		},
 		"descriptionShort": {
 			"type": "string",
 			"description": "A summary of this announcement.",

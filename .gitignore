@@ -10,5 +10,6 @@ temp
 .settings
 .DS_Store
 /adminer.php
-/cache/
+/cache
 .idea/
+

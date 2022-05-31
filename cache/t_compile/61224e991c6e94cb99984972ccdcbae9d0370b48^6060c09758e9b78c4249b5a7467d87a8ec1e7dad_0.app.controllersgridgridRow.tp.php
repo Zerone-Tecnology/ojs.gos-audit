@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.39, created on 2022-01-20 13:06:57
+/* Smarty version 3.1.39, created on 2022-05-25 09:54:17
   from 'app:controllersgridgridRow.tp' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.39',
-  'unifunc' => 'content_61e90a116290b2_08709791',
+  'unifunc' => 'content_628dd299d6cae9_63636740',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '6060c09758e9b78c4249b5a7467d87a8ec1e7dad' => 
     array (
       0 => 'app:controllersgridgridRow.tp',
-      1 => 1630422204,
+      1 => 1653459423,
       2 => 'app',
     ),
   ),
@@ -21,8 +21,8 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'app:linkAction/linkAction.tpl' => 2,
   ),
 ),false)) {
-function content_61e90a116290b2_08709791 (Smarty_Internal_Template $_smarty_tpl) {
-$_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/var/www/vhosts/nesibeli.kz/ga.seopro.kz/lib/pkp/lib/vendor/smarty/smarty/libs/plugins/modifier.replace.php','function'=>'smarty_modifier_replace',),));
+function content_628dd299d6cae9_63636740 (Smarty_Internal_Template $_smarty_tpl) {
+$_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\Users\\user\\OpenServer\\domains\\ojs.gos-audit\\lib\\pkp\\lib\\vendor\\smarty\\smarty\\libs\\plugins\\modifier.replace.php','function'=>'smarty_modifier_replace',),));
 if (!is_null($_smarty_tpl->tpl_vars['row']->value->getId())) {?>
 	<?php $_smarty_tpl->_assignInScope('rowIdPrefix', call_user_func_array($_smarty_tpl->registered_plugins[ 'modifier' ][ 'concat' ][ 0 ], array( "component-",$_smarty_tpl->tpl_vars['row']->value->getGridId() )));?>
 	<?php if ($_smarty_tpl->tpl_vars['categoryId']->value) {?>

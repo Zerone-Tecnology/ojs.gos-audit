@@ -23,60 +23,95 @@
 {/capture}
 {include file="frontend/components/header.tpl" pageTitleTranslated=$pageTitle}
 
-<div class="container page-archives">
-
-	<div class="page-header page-archives-header">
-		<h1>{$pageTitle|escape}</h1>
-	</div>
-
-	{* No issues have been published *}
-	{if empty($issues)}
-		<div class="page-header page-issue-header">
-			{include file="frontend/components/notification.tpl" messageKey="current.noCurrentIssueDesc"}
+<div class="breadcrumb">
+	<div class="container">
+		<div class="row">
+			<nav class="cmp_breadcrumbs" role="navigation" aria-label="Вы здесь:">
+				<ol>
+					<li>
+						<a href="/">
+							{translate key="user.index"}
+						</a>
+					</li>
+					<li class="current">
+						<span aria-current="page">
+							{translate key="user.archive"}
+						</span>
+					</li>
+				</ol>
+			</nav>
 		</div>
-
-	{* List issues *}
-	{else}
-		{foreach from=$issues item="issue" key="i"}
-			{if $i % 4 == 0 && $i > 0}
-				</div>
-				{assign var="open" value=false}
-			{/if}
-			{if $i % 4 == 0}
-				<div class="row justify-content-around">
-				{assign var="open" value=true}
-			{/if}
-			<div class="col-md-3 col-lg-2">
-				{include file="frontend/objects/issue_summary.tpl" heading="h2"}
-			</div>
-		{/foreach}
-		{if $open}
-			</div>{* Close an open row *}
-		{/if}
-
-		{* Pagination *}
-		{capture assign="prevUrl"}
-			{if $prevPage > 1}
-				{url router=$smarty.const.ROUTE_PAGE page="issue" op="archive" path=$prevPage}
-			{elseif $prevPage === 1}
-				{url router=$smarty.const.ROUTE_PAGE page="issue" op="archive"}
-			{/if}
-		{/capture}
-		{capture assign="nextUrl"}
-			{if $nextPage}
-				{url router=$smarty.const.ROUTE_PAGE page="issue" op="archive" path=$nextPage}
-			{/if}
-		{/capture}
-		{include
-			file="frontend/components/pagination.tpl"
-			prevUrl=$prevUrl|trim
-			nextUrl=$nextUrl|trim
-			showingStart=$showingStart
-			showingEnd=$showingEnd
-			total=$total
-		}
-	{/if}
+	</div>
 </div>
+
+<main class="main_page">
+	<div class="container">
+		<div class="page-wrapper">
+			<div class="title">
+				{translate key="user.archive"}
+			</div>
+			<div class="page-content">
+				{* No issues have been published *}
+				{if empty($issues)}
+					<div class="page-header page-issue-header">
+						{include file="frontend/components/notification.tpl" messageKey="current.noCurrentIssueDesc"}
+					</div>
+
+				{* List issues *}
+				{else}
+                   
+					<div class="archive-form-block">
+						<form action="" class="form-filter">
+							<ul class="x-nav select-year" data-x-element="tab_nav" data-x-params="orientation-vertical">
+								{foreach from=$issues item="issue" key="x"}
+									{if $issue->getYear() != $lastYear}
+										{if $x == 0}
+											<li  data-tab-target="#{$issue->getYear()|escape}"  class="x-nav-tabs-item active">
+												<a data-cs-tab-toggle="{$issue->getYear()|escape}">{$issue->getYear()|escape}</a>
+											</li>
+											<div class="circle"></div>
+											{assign var=lastYear value=$issue->getYear()}
+										{else}
+											<li  data-tab-target="#{$issue->getYear()|escape}"  class="x-nav-tabs-item">
+												<a data-cs-tab-toggle="{$issue->getYear()|escape}">{$issue->getYear()|escape}</a>
+											</li>
+											<div class="circle"></div>
+											{assign var=lastYear value=$issue->getYear()}
+										{/if}
+									{/if} 
+									
+								{/foreach}
+							</ul>
+						</form>
+					</div>
+						
+
+					{foreach from=$issues item="issue" key="i"}
+						{if $issue->getYear() != $lastYear && $i > 0}
+							</div>
+						{/if}
+						{if $i == 0}
+								<div class="row justify-content-center x-tab-pane active" data-cs-tab-index="{$issue->getYear()|escape}">
+								{assign var=lastYear value=$issue->getYear()}
+						{elseif $issue->getYear() != $lastYear}
+							<div class="row justify-content-center x-tab-pane" data-cs-tab-index="{$issue->getYear()|escape}">
+							{assign var=lastYear value=$issue->getYear()}
+						{/if}
+						<div class="col-md-3 col-lg-3">
+							{include file="frontend/objects/issue_summary.tpl" heading="h2"}
+						</div>
+
+					{/foreach}
+					{if $lastYear}
+						</div>{* Close an open row *}
+					{/if}
+
+					
+				{/if}
+			</div>
+		</div>
+	</div>
+</main>
 
 
 {include file="frontend/components/footer.tpl"}

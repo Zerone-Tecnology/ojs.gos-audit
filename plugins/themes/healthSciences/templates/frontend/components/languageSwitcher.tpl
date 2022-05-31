@@ -12,19 +12,22 @@
  * @uses $id string A unique ID for this language toggle
  *}
 {if $languageToggleLocales && $languageToggleLocales|@count > 1}
-	<div id="{$id|escape}" class="dropdown language-toggle">
-		<button class="btn dropdown-toggle" type="button" id="languageToggleMenu{$id|escape}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			<span class="sr-only">{translate key="plugins.themes.healthSciences.language.toggle"}</span>
-			{$languageToggleLocales[$currentLocale]}
-		</button>
-		<div class="dropdown-menu" aria-labelledby="languageToggleMenu{$id|escape}">
+	<ul class="lang--list">
+		<li class="lang--item active">
+			<a class="part-2 current lang--link" type="button" id="languageToggleMenu{$id|escape}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span class="sr-only">{translate key="plugins.themes.healthSciences.language.toggle"}</span>
+				{$languageToggleLocales[$currentLocale]}
+			</a>
+		</li>
+		
 			{foreach from=$languageToggleLocales item="localeName" key="localeKey"}
 				{if $localeKey !== $currentLocale}
-					<a class="dropdown-item" href="{url router=$smarty.const.ROUTE_PAGE page="user" op="setLocale" path=$localeKey source=$smarty.server.REQUEST_URI}">
-						{$localeName}
-					</a>
+					<li class="lang--item">
+						<a class="part-2 lang--link" href="{url router=$smarty.const.ROUTE_PAGE page="user" op="setLocale" path=$localeKey source=$smarty.server.REQUEST_URI}">
+							{$localeName}
+						</a>
+					</li>
 				{/if}
 			{/foreach}
-		</div>
-	</div>
+	</ul>
 {/if}

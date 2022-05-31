@@ -1,0 +1,20 @@
+{
+  "name": "vendor/zerone",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Abylai",
+      "email": "abylai.develop@gmail.com"
+    }
+  ],
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "Zerone\\": "include/zerone"
+    }
+  }
+}
+

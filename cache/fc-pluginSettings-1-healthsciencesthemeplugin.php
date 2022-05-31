@@ -1,4 +1,4 @@
 <?php return array (
-  'baseColour' => '#10BECA',
+  'baseColour' => '#FFFFFF',
   'enabled' => true,
 );

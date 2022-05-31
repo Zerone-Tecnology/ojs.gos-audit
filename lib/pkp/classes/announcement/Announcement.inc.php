@@ -155,6 +155,10 @@ class Announcement extends DataObject {
 		return $this->getLocalizedData('description');
 	}
 
+    function getLocalizedImage() {
+        return $this->getLocalizedData('image');
+    }
+
 	/**
 	 * Get announcement description.
 	 * @param $locale string
